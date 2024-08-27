@@ -50,23 +50,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Docker image
-      run: docker build -t leyline-assignment:${{ github.sha }} .
+      run: sudo docker build -t leyline-assignment:${{ github.sha }} .
     - name: Save Docker image
-      run: docker save leyline-assignment:${{ github.sha }} > leyline-assignment.tar
+      run: sudo docker save leyline-assignment:${{ github.sha }} > leyline-assignment.tar
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v2
       with:
         name: docker-image
         path: leyline-assignment.tar
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-    - name: Push Docker image
-      run: |
-        docker tag leyline-assignment:${{ github.sha }} your-docker-registry/leyline-assignment:${{ github.sha }}
-        docker push your-docker-registry/leyline-assignment:${{ github.sha }}
+    # - name: Log in to Docker Hub
+    #   uses: docker/login-action@v1
+    #   with:
+    #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
+    #     password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    # - name: Push Docker image
+    #   run: |
+    #     docker tag leyline-assignment:${{ github.sha }} your-docker-registry/leyline-assignment:${{ github.sha }}
+    #     docker push your-docker-registry/leyline-assignment:${{ github.sha }}
 
   package:
     needs: build
