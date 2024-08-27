@@ -58,6 +58,7 @@ jobs:
       with:
         name: docker-image
         path: leyline-assignment.tar
+    #  commented out as i don't want to push the docker image into registry
     # - name: Log in to Docker Hub
     #   uses: docker/login-action@v1
     #   with:
@@ -73,10 +74,6 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
-      with:
-        version: v3.4.0
     - name: Package Helm chart
       run: |
         helm package ./leyline-assignment --version ${{ github.sha }}
