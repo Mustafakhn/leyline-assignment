@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "leyline-assignment.fullname" . }}
+  labels:
+    {{- include "leyline-assignment.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "leyline-assignment.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "leyline-assignment.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+            - name: MYSQL_HOST
+              value: {{ .Values.database.host | quote }}
+            - name: MYSQL_NAME
+              value: {{ .Values.database.name | quote }}
+            - name: MYSQL_USER
+              value: {{ .Values.database.user | quote }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "leyline-assignment.fullname" . }}
+            - secretRef:
+                name: {{ include "leyline-assignment.fullname" . }}

@@ -1,0 +1,45 @@
+replicaCount: 1
+
+image:
+  repository: leyline-assignment # or your registry and image name
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: LoadBalancer
+  port: 3000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetAverageUtilization: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  - name: APP_ENV
+    value: "production"
+
+secretEnv:
+  MYSQL_PASSWORD: "ZGJBZG1pbkAwMzIx" # base64 encrypted db password
+
+database:
+  host: "127.0.0.1" # your db host here
+  name: "leyline_db"
+  user: "db-admin"

@@ -1,0 +1,16 @@
+from fastapi import APIRouter, HTTPException
+import socket
+from app.database import save_query
+
+router = APIRouter()
+
+
+@router.get("/v1/tools/lookup")
+async def lookup(domain: str):
+    try:
+        ipv4_addresses = socket.gethostbyname_ex(domain)[2]
+        ipv4_only = [ip for ip in ipv4_addresses if "." in ip]
+        save_query(domain, ipv4_only)
+        return {"ipv4_addresses": ipv4_only}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
