@@ -17,6 +17,7 @@ async def root():
     import time
     import os
 
+
     return {
         "version": "0.1.0",
         "date": int(time.time()),

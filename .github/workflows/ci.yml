@@ -22,10 +22,12 @@ jobs:
         pip install pytest pytest-cov
     - name: Run tests with pytest
       run: pytest --cov=./ --cov-report=html
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+    - name: Upload coverage to artifact
+      uses: actions/upload-artifact@v2
       with:
-        fail_ci_if_error: true
+        name: test-report
+        path: htmlcov
+
 
   lint:
     runs-on: self-hosted
