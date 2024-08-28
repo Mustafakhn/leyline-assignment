@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
+
+
 def get_connection():
     try:
         connection = pymysql.connect(
@@ -19,6 +21,7 @@ def get_connection():
         print(f"Error connecting to MySQL: {e}")
         return None
 
+
 def initialize_database():
     # Create a connection to MySQL without specifying the database to create it
     try:
@@ -30,7 +33,7 @@ def initialize_database():
         )
         with connection.cursor() as cursor:
             # Create the database if it doesn't exist
-            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {os.getenv('MYSQL_DB', 'leyline_db')}")
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {os.getenv('MYSQL_DB', 'leyline_db')}")  # noqa: E501
             # Select the database
             cursor.execute(f"USE {os.getenv('MYSQL_DB', 'leyline_db')}")
             # Create the table if it doesn't exist
@@ -49,6 +52,7 @@ def initialize_database():
     finally:
         connection.close()
 
+
 def save_query(domain, ipv4_addresses):
     conn = get_connection()
     if conn:
@@ -63,6 +67,7 @@ def save_query(domain, ipv4_addresses):
             print(f"Error saving query: {e}")
         finally:
             conn.close()
+
 
 def get_recent_queries():
     conn = get_connection()
