@@ -29,7 +29,7 @@ Below are the endpoints of the application:
     MYSQL_HOST="host or ip"
     MYSQL_USER="your username"
     MYSQL_PASSWORD="your password"
-    MYSQL_DB="database name (you can use "leyline_db" if you followed the instructions below in database setup section)"
+    MYSQL_DB="leyline_db"
     ```
 
 2.  Build the Docker image:
@@ -109,7 +109,16 @@ Note: Make sure your Kubernetes cluster has access to pull the Docker image spec
     pip install -r requirements.txt
     ```
 
-2. Start the application:
+2. create a `.env` file in the root directory with the following values:
+   ```
+    MYSQL_HOST="your host ip or address" # default localhost
+    MYSQL_USER="your user" # default root
+    MYSQL_PASSWORD="your password" # default is null
+    MYSQL_DB="your db name" # default leyline_db
+   ```
+   **Note**:  these have default values assigned to them that are specified in the code if you want to use them just set up environment variable or specify the **MYSQL_PASSWORD** in `.env` file with correct password for database
+
+3. Start the application:
     ```bash
     uvicorn app.main:app --host 0.0.0.0 --port 3000
     ```
@@ -131,7 +140,7 @@ Below is the structure of the directory for a better understanding:
 │       ├── history.py
 │       ├── lookup.py
 │       └── validate.py
-├── leyline-assignment/
+├── leyline-assignment-chart/
 │   ├── Chart.yaml
 │   ├── values.yaml
 │   ├── templates/
