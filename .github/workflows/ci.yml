@@ -85,7 +85,7 @@ jobs:
         version: v3.8.0
     - name: Package Helm chart
       run: |
-        helm package ./leyline-assignment
+        helm package ./leyline-assignment-chart
         helm repo index .
     - name: Upload Helm chart
       uses: actions/upload-artifact@v2
