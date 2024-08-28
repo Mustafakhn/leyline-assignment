@@ -124,33 +124,57 @@ Note: Make sure your Kubernetes cluster has access to pull the Docker image spec
     uvicorn app.main:app --host 0.0.0.0 --port 3000
     ```
 
+### Running tests and linting
+
+Below are the steps you need to run the test cases and linting locally:
+1. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+- Steps for running Tests:
+    - Run tests with reports:
+        ```bash
+        pytest --cov=./ --cov-report=html
+        ```
+        **NOTE**: *the reports for the test cases are in the folder `htmlcov` which is created under the root directory*
+
+- Running Linting:
+    - Run Linting with flake8:
+        ```bash
+        flake8 ./app/
+        ```
+
 ## Directory structure
 
 Below is the structure of the directory for a better understanding:
 ```
-├── conftest.py
 ├── Dockerfile
-├── docker-compose.yaml
 ├── Readme.md
-├── .gitignore
 ├── app
-│   ├── database.py
-│   ├── main.py
-│   └── routers
-│       ├── health.py
-│       ├── history.py
-│       ├── lookup.py
-│       └── validate.py
-├── leyline-assignment-chart/
+│   ├── database.py
+│   ├── main.py
+│   ├── models.py
+│   ├── routers
+│   │   ├── health.py
+│   │   ├── history.py
+│   │   ├── lookup.py
+│   │   └── validate.py
+│   └── schemas.py
+├── conftest.py
+├── docker-compose.yaml
+├── leyline-assignment-chart
 │   ├── Chart.yaml
-│   ├── values.yaml
-│   ├── templates/
-│   │   ├── deployment.yaml
-│   │   ├── service.yaml
+│   ├── templates
+│   │   ├── _helpers.yaml
 │   │   ├── configmap.yaml
-│   │   ├── secret.yaml
+│   │   ├── deployment.yaml
 │   │   ├── hpa.yaml
-│   │   └── _helpers.tpl
-│   └── .helmignore
-└── requirements.txt
+│   │   ├── secret.yaml
+│   │   └── service.yaml
+│   └── values.yaml
+├── requirements.txt
+└── tests
+    ├── test_health.py
+    ├── test_lookup.py
+    └── test_main.py
 ```

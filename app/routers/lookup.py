@@ -13,6 +13,6 @@ async def lookup(domain: str):
         ipv4_only = [ip for ip in ipv4_addresses if "." in ip]
         save_query(domain, ipv4_only)
         print(ipv4_only)
-        return {"ipv4_adresses": ipv4_only}
+        return {"ipv4_addresses": ipv4_only}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
