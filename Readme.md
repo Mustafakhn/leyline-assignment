@@ -69,7 +69,7 @@ Below are the endpoints of the application:
 
 1. Ensure you have Helm installed and your kubectl is configured to connect to your Kubernetes cluster.
 
-2. Navigate to the directory containing the Helm chart (assuming it's in a directory named `leyline-assignment-chart`):
+2. Navigate to the directory containing the Helm chart in the directory named `leyline-assignment-chart`:
     ```bash
     cd leyline-assignment-chart
     ```
