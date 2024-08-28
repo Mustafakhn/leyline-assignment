@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: leyline-app
+    ports:
+      - "3000:3000"
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: leyline_user
+      MYSQL_PASSWORD: leyline_password
+      MYSQL_DB: leyline_db
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: leyline-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Root user password
+      MYSQL_DATABASE: leyline_db          # Database to create
+      MYSQL_USER: leyline_user            # Regular user
+      MYSQL_PASSWORD: leyline_password    # Regular user password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql_data:

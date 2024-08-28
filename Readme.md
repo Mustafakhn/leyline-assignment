@@ -1,45 +1,16 @@
 # Leyline assignment:
-## Coding Challenge
-Please create a REST API based on the attached OpenAPI/Swagger definition in your preferred language (Python). In addition to the endpoints included in the Swagger definition, please ensure that a Prometheus metrics endpoint is available in your application under /metrics. The application should also provide a /health endpoint.
-
-The `/` (root) endpoint should provide the current date (UNIX epoch) and version. Additionally, a boolean property called Kubernetes should indicate if the application is running under Kubernetes. Below is an example of the expected output.
-
-```
-{
-  "version": "0.1.0",
-  "date": 1663534325,
-  "kubernetes": false
-}
-```
-
-The `/v1/tools/lookup` endpoint should resolve ONLY the IPv4 addresses for the given domain. Make sure you log all successful queries and their result in a database of your choosing (PostgreSQL, MySQL/MariaDB, MongoDB, Redis, ElasticSearch, SurrealDB, etc.). No SQLite or file-based databases, as we're planning on deploying this service to Kubernetes.
-
-For the `/v1/tools/validate` endpoint, the service should validate if the input is an IPv4 address or not.
-
-The `/v1/history` endpoint should retrieve the latest 20 saved queries from the database and display them in order (the most recent should be first).
-
-Please ensure the service starts on port 3000 and your REST API has an access log. Uh-oh, don't forget about graceful shutdowns.
-
-If possible, please make sure the OpenAPI/Swagger is available so we can generate a client for your service (not mandatory).
-
-## Development environment
-
-Create a fully Dockerized development environment using Docker and Docker Compose. Also, ensure all services and tools are included in the Docker Compose definition and that everything starts in the correct order and initializes correctly (migrations, etc.). We should be able to run everything with a simple:
-docker-compose up -d --build
-The Dockerfile and Docker Compose files should be available in the root directory of your project.
-
-Kubernetes support
-We plan on running your application in Kubernetes, so please provide either Kubernetes manifests or a Helm Chart. We prefer Helm Charts. Also, please store sensitive data in Kubernetes secrets (database passwords, etc.)
-
-## CI Pipeline
-Add a CI pipeline (GitHub Actions, GitLab CI, etc.) to test (basic tests, linting, etc.), build (Docker only), and package (Helm chart) your application upon each commit. The artifact of your build should be at least a versioned Docker image.
-
-
+[Assignment ](https://m3d60c6dc7z.larksuite.com/docx/Kw8zdbAAMotF42xyJhcunL1Dsvf)
 # Solution
+This is a REST API Application that i built with FastAPI and MySQL.
 
-This is a REST API built with FastAPI and MySQL.
+Below i have mentioned the details of the application and the steps to run the application in various environments such as:
+- Locallly
+- Docker (Using Dockerfile or docker-compose file)
+- Kubernetes (k8s) - (Using helm charts)
 
 ## Endpoints
+
+Below are the endpoints of the application:
 
 - `/`: Root endpoint that returns version, date, and Kubernetes status.
 - `/metrics`: Prometheus metrics endpoint for scraping metrics.
@@ -51,7 +22,7 @@ This is a REST API built with FastAPI and MySQL.
 
 ## Running the Project
 
-### Using Docker
+### Using Docker with Dockerfile
 
 1. Add all the environment variablies in the `.env` file in the root directory and add `COPY .env .env` in `Dockerfile` before the ```CMD  ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3000"]``` in the root directory as shown below:
     ```
@@ -82,6 +53,54 @@ This is a REST API built with FastAPI and MySQL.
         leyline-assignment
 
     ```
+### Using Docker with docker compose
+
+1. Run the following command in the root directory of the project:
+    ```bash
+    docker-compose up -d --build
+    ```
+2. To stop the containers, run:
+    ```bash
+    docker-compose down
+    ```
+
+### Deploying to Kubernetes using Helm
+
+1. Ensure you have Helm installed and your kubectl is configured to connect to your Kubernetes cluster.
+
+2. Navigate to the directory containing the Helm chart (assuming it's in a directory named `leyline-assignment-chart`):
+    ```bash
+    cd leyline-assignment-chart
+    ```
+
+3. Update the `values.yaml` file with your specific configuration, such as the Docker `image repository` and tag, database details (which are under the key named database , and add the `base64` encrypted password in `MYSQL_PASSWORD` key loacted under `secretEnv` key.)
+
+4. Install the Helm chart:
+    ```bash
+    helm install leyline-assignment ./
+    ```
+
+5. To upgrade the deployment after making changes:
+    ```bash
+    helm upgrade leyline-assignment ./
+    ```
+
+6. To uninstall the deployment:
+    ```bash
+    helm uninstall leyline-assignment
+    ```
+
+7. To check the status of the deployment:
+    ```bash
+    helm status leyline-assignment
+    ```
+
+8. To see all the resources created by the Helm chart:
+    ```bash
+    kubectl get all -l app.kubernetes.io/instance=leyline-assignment
+    ```
+
+Note: Make sure your Kubernetes cluster has access to pull the Docker image specified in the `values.yaml` file. If you're using a private Docker registry, you may need to set up image pull secrets.
 
 ### Running Locally
 
@@ -95,29 +114,14 @@ This is a REST API built with FastAPI and MySQL.
     uvicorn app.main:app --host 0.0.0.0 --port 3000
     ```
 
-## Database Setup
-
-1. Create the MySQL database and table:
-
-    ```sql
-    CREATE DATABASE IF NOT EXISTS leyline_db;
-
-    USE leyline_db;
-
-    CREATE TABLE IF NOT EXISTS queries (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        domain VARCHAR(255) NOT NULL,
-        ipv4_addresses TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-    ```
 ## Directory structure
 
 Below is the structure of the directory for a better understanding:
 ```
-├── Dockerfile
-├── Readme.md
 ├── conftest.py
+├── Dockerfile
+├── docker-compose.yaml
+├── Readme.md
 ├── .gitignore
 ├── app
 │   ├── database.py

@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: leyline-assignment # or your registry and image name
+  repository: leyline-assignment-v2 # or your registry and image name
   pullPolicy: IfNotPresent
   tag: "latest"
 
@@ -40,6 +40,6 @@ secretEnv:
   MYSQL_PASSWORD: "ZGJBZG1pbkAwMzIx" # base64 encrypted db password
 
 database:
-  host: "141.148.206.132" # your db host here
+  host: "database-host" # your db host here
   name: "leyline_db"
-  user: "db-admin"
+  user: "leyline-db-admin"
