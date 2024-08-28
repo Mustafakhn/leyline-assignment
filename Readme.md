@@ -4,9 +4,10 @@
 This is a REST API Application that i built with FastAPI and MySQL.
 
 Below i have mentioned the details of the application and the steps to run the application in various environments such as:
-- Locallly
+
 - Docker (Using Dockerfile or docker-compose file)
 - Kubernetes (k8s) - (Using helm charts)
+- Locally
 
 ## Endpoints
 
