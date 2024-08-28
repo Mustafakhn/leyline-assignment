@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routers import health, lookup, validate, history
 from prometheus_fastapi_instrumentator import Instrumentator
+from app import schemas
 
 app = FastAPI()
 
@@ -12,7 +13,7 @@ app.include_router(validate.router)
 app.include_router(history.router)
 
 
-@app.get("/")
+@app.get("/", response_model=schemas.Status)
 async def root():
     import time
     import os

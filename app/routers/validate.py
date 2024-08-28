@@ -1,11 +1,15 @@
-from fastapi import APIRouter
-import re
+from fastapi import APIRouter, HTTPException
+from app.schemas import ValidateIPRequest
+from app.models import ValidateIPResponse
+import ipaddress
 
 router = APIRouter()
 
 
-@router.get("/v1/tools/validate")
-async def validate_ip(ip: str):
-    ipv4_pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
-    is_valid = bool(ipv4_pattern.match(ip))
-    return {"is_valid_ipv4": is_valid}
+@router.post("/v1/tools/validate", response_model=ValidateIPResponse)
+async def validate_ip(request: ValidateIPRequest):
+    try:
+        ipaddress.ip_address(request.ip)
+        return ValidateIPResponse(status=True)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid IP address")
